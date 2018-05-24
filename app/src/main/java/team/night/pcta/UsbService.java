@@ -23,6 +23,7 @@ import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,28 +59,44 @@ public class UsbService extends Service {
      *  In this particular example. byte stream is converted to String and send to UI thread to
      *  be treated there.
      */
+
+    final int PLU_OPCODE_SIZE  =  0x04; /*Opcode size of PLU_Log_Event*/
+    final int PLU_LENGTH_SIZE  =  0x04; /*Size of PLU_Log_Event length*/
+    final int PLU_HEADER_SIZE  =  0x08;
+    final int PCTA_PLU_DATA_SIZE_MAX  = 0x400;                            //!< Max msg length will be PCTA_PLU_DATA_SIZE_MAX + 4(Opcode) + 4(Length) + 4(RetCode)
+    final int PLU_MIN_MSG_SIZE =  0x0C;                                   //!< Contains 4 bytes for Opcode + 4 bytes for Length + 4 bytes for RetCode
+    int max_msg_length = PCTA_PLU_DATA_SIZE_MAX + PLU_MIN_MSG_SIZE;
+    byte[] data_arraybyte = new byte[max_msg_length];
+    int readBytes = 0;
+    int opCode = 0;
+    int length = 0;
+    int payloadLength = 0;
+    int msgTotalLength = 0;
+    int read_timeout_idx = 0;
     int counter = 0;
+    QueueFromSerial queue = QueueFromSerial.getInstance();
     private UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         @Override
         public void onReceivedData(byte[] arg0) {
-
-            Log.i("UsbReadCallback", "Received " + Integer.toString(++counter));
-
-
-            try {
-                //    String data = new String(arg0);   // was - charSet (arg0, "UTF-8")
-                StringBuilder sb = new StringBuilder(arg0.length * 2);
-                for(byte b: arg0) {
-                    sb.append(String.format("%02x", b));
-
+    try {
+                Log.i("UsbReadCallback", "Received " + Integer.toString(++counter));
+                byte[] temp = Arrays.copyOfRange(arg0, 0, arg0.length);
+                StringBuilder sb = new StringBuilder();
+                sb.append("[ ");
+                for (byte b : temp) {
+                    sb.append(String.format("0x%02X ", b));
+                    queue.addToQueue(b);
                 }
-                String data = sb.toString() + "\n";
-                if (mHandler != null) {
+                sb.append("]");
+          /*      if (mHandler != null) {
+                    String data = "MESSAGE" + "\n";
                     mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
-                }
+                }  */
             } catch (Exception e) {
                 e.printStackTrace();
-            } 
+            }
+
+
         }
     };
     /*

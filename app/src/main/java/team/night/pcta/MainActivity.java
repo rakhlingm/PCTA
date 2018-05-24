@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
      * Notifications from UsbService will be received here.
      */
     PCTA_Logger log;
+    Superposition_Logger superposition_logger;
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -51,9 +53,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     private UsbService usbService;
+    private Log_PLU_Event_Info log_plu_event_info;
     private TextView display;
     private EditText editText;
     private MyHandler mHandler;
+    private Handler mTextBoxHandler;
+    private boolean gameOn;
+    long startTime;
     private final ServiceConnection usbConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
@@ -71,16 +77,45 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        log = new PCTA_Logger();
+        startTime = System.currentTimeMillis();
+
+        display = (TextView) findViewById(R.id.textView1);
+        display.setMovementMethod(new ScrollingMovementMethod());
+        startTime = System.currentTimeMillis();
+        mTextBoxHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+                if (gameOn) {
+                    long seconds = ((System.currentTimeMillis() - startTime)) / 1000;
+                    Log.i("info", "seconds = " + seconds);
+                    display.setText("seconds = " + seconds);
+                }
+            //    mTextBoxHandler.sendEmptyMessageDelayed(0, 1000);
+            }
+        };
+
+        gameOn = true;
+        Log_PLU_Event_Info log_plu_event_info = new Log_PLU_Event_Info(mTextBoxHandler);
+        mTextBoxHandler.sendEmptyMessage(0);
+
+        log = PCTA_Logger.getInstance();
         try {
             log.getMainFolder();
         } catch (IOException e) {
             e.printStackTrace();
         }
         log.i(Constants.PCTA_INITIALIZATION);
+        superposition_logger = Superposition_Logger.getInstance();
+        try {
+            superposition_logger.getMainFolder();
+            log.i(Constants.SUPERPOSITION_LOG_FILE_CREATED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mHandler = new MyHandler(this);
-        display = (TextView) findViewById(R.id.textView1);
-        display.setMovementMethod(new ScrollingMovementMethod());
+    //    log_plu_event_info.setmHandler(mHandler);
+
         editText = (EditText) findViewById(R.id.editText1);
         Button sendButton = (Button) findViewById(R.id.buttonSend);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        QueueBytesFromSerial qbfs = new QueueBytesFromSerial();
+        qbfs.execute();
     }
     /*TO ADD*/
     @Override
@@ -152,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case UsbService.MESSAGE_FROM_SERIAL_PORT:
                     String data = (String) msg.obj;
-                    mActivity.get().display.append(Integer.toString(++counter));  /*was (data)*/
+            //        mActivity.get().display.append(Integer.toString(++counter));  /*was (data)*/
+//                    mActivity.get().display.append(data);  /*was (data)*/
                     log.i(data);
                     try {
                         log.i(data);
@@ -167,4 +205,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }

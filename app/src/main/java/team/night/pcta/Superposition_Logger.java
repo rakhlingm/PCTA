@@ -1,7 +1,7 @@
 package team.night.pcta;
 
 /**
- * Created by GregoriRakhlin on 4/29/2018.
+ * Created by GregoriRakhlin on 5/14/2018.
  */
 
 import android.content.Context;
@@ -19,15 +19,15 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public class PCTA_Logger {
+public class Superposition_Logger {
 
-    public static PCTA_Logger instance;
+    public static Superposition_Logger instance;
 
-    public PCTA_Logger () {}
+    public Superposition_Logger () {}
 
-    public static synchronized PCTA_Logger getInstance() {
+    public static synchronized Superposition_Logger getInstance() {
         if (instance == null) {
-            instance = new PCTA_Logger();
+            instance = new Superposition_Logger();
         }
         return instance;
     }
@@ -64,20 +64,24 @@ public class PCTA_Logger {
     }
     public File createLogFile() {
         try {
-            logFile = new File(Environment.getExternalStoragePublicDirectory ("/" + Constants.MAIN_FOLDER + "/") + "/" + Constants.LOG_FILE + "_" + getCurrentTime() + ".txt");//"_" + format.format(Calendar.getInstance().getTime()) + ".txt");
+            logFile = new File(Environment.getExternalStoragePublicDirectory ("/" + Constants.MAIN_FOLDER + "/") + "/" + Constants.SUPERPOSITION_LOG_FILE + "_" + getCurrentTime() + ".txt");//"_" + format.format(Calendar.getInstance().getTime()) + ".txt");
             Log.e("Logfile", logFile.getAbsolutePath());
             if (!logFile.exists()) {
                 logFile.createNewFile();
                 Log.e("Log", "File created");
             }
-            } catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return logFile;
     }
-    public void log(LogLevel logLevel, String msg) {
+    public void log(int antenna, Superposition superposition) {
         try {
-            String log = logLevel.toString() + ": " + getCurrentTime() + " " + msg + "\n";
+            String log = "Super possition: T1:" + superposition.getSystemTimastamp() + " T2: " + superposition.getPLUTimastamp()
+            + " Super position Ant " + antenna + ": Bin 1: " + superposition.getBin1() + " Bin 2: " + superposition.getBin2()
+            +  " Bin 3: " + superposition.getBin3() + " Bin 4: " + superposition.getBin4() + " Bin 5: " + superposition.getBin5()
+            + " Size: " + superposition.getSize() + " Sub-band ID: " + superposition.getSub_band()
+            + " Channel: " + superposition.getChannel() + "\n";
             FileOutputStream fileOutputStream = new FileOutputStream(logFile,true);
             byte[] buffer = log.getBytes();
             fileOutputStream.write(buffer, 0, buffer.length);
@@ -85,19 +89,5 @@ public class PCTA_Logger {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void i (String log) {
-        LogLevel logLevel = LogLevel.INF;
-        log(logLevel, log);
-    }
-
-    public void e (String log) {
-        LogLevel logLevel = LogLevel.ERR;
-        log(logLevel, log);
-    }
-
-    public void w (String log) {
-        LogLevel logLevel = LogLevel.WAR;
-        log(logLevel, log);
     }
 }
