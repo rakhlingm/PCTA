@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
      */
     PCTA_Logger log;
     Superposition_Logger superposition_logger;
+    QueueBytesFromSerial qbfs;
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
             usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(mHandler);
+        //    usbService.setHandler(mHandler);
         }
 
         @Override
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         display = (TextView) findViewById(R.id.textView1);
         display.setMovementMethod(new ScrollingMovementMethod());
         startTime = System.currentTimeMillis();
+        QueueBytesFromSerial queueBytesFromSerial = new QueueBytesFromSerial();
+        queueBytesFromSerial.setHandler(mHandler);
         mTextBoxHandler = new Handler() {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         gameOn = true;
-        Log_PLU_Event_Info log_plu_event_info = new Log_PLU_Event_Info(mTextBoxHandler);
+    //    Log_PLU_Event_Info log_plu_event_info = new Log_PLU_Event_Info(mTextBoxHandler);
         mTextBoxHandler.sendEmptyMessage(0);
 
         log = PCTA_Logger.getInstance();
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        QueueBytesFromSerial qbfs = new QueueBytesFromSerial();
+        qbfs = new QueueBytesFromSerial();
         qbfs.execute();
     }
     /*TO ADD*/
@@ -191,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
                     String data = (String) msg.obj;
             //        mActivity.get().display.append(Integer.toString(++counter));  /*was (data)*/
 //                    mActivity.get().display.append(data);  /*was (data)*/
+                    mActivity.get().display.append(data);
                     log.i(data);
                     try {
                         log.i(data);

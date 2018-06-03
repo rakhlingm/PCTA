@@ -1,12 +1,11 @@
 package team.night.pcta;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 
 
 public class QueueFromSerial {
@@ -21,11 +20,17 @@ public class QueueFromSerial {
         }
         return instance;
     }
-    Queue<Byte> queue = new LinkedList<Byte>();
+    public Queue<Byte> queue = new LinkedList<Byte>();
+
+/*    public Handler mHandler;   */
 
     public Queue<Byte> getQueue() {
         return queue;
     }
+
+/*    public void setmHandler(Handler mHandler) {
+        this.mHandler = mHandler;
+    }  */
 
     public void addToQueue(byte byteFromSerial) {
         try {
@@ -57,6 +62,12 @@ public class QueueFromSerial {
 class QueueBytesFromSerial extends AsyncTask<Void, Void, Void> {
 
     QueueFromSerial qfs = QueueFromSerial.getInstance();
+    Log_PLU_Event_Info log_plu_event_info = null;
+    Handler mHandler;
+    public void setHandler(Handler mHandler) {
+        this.mHandler = mHandler;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -65,6 +76,7 @@ class QueueBytesFromSerial extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         PCTA_Logger log = PCTA_Logger.getInstance();
+
         while(true){
         Log.i("Loop", "TRUE");
         int addedBytes = 0;
@@ -83,11 +95,13 @@ class QueueBytesFromSerial extends AsyncTask<Void, Void, Void> {
                 Log.e("PeekQueue() timeout - 1", Integer.toString(++read_timeout_idx));
                 Log.e("Queue size - 1", Integer.toString(qfs.getQueue().size()));
                 Log.e("addedBytes - 1", Integer.toString(addedBytes));
+                e.printStackTrace();
                 if(qfs.getQueue()  != null) {
                     Log.e("qfs.getQueue() - 1", "Not null");
                 } else {
                     Log.e("qfs.getQueue() - 1", "Null");
                 }
+
 
             //    e.printStackTrace();
                 try {
@@ -142,7 +156,7 @@ class QueueBytesFromSerial extends AsyncTask<Void, Void, Void> {
         read_timeout_idx = 0;
         if(length != 0){
             messageArray = new byte[length];
-            while ((addedBytes < length) && (read_timeout_idx < 500)) {
+            while ((addedBytes < length) ) {//&& (read_timeout_idx < 500)) {
                 try {
                     messageArray[addedBytes] = qfs.peekQueue();
                     addedBytes++;
@@ -171,12 +185,26 @@ class QueueBytesFromSerial extends AsyncTask<Void, Void, Void> {
             addedBytes = 0;
             read_timeout_idx = 0;
         }
-        Log_PLU_Event_Info log_plu_event_info = new Log_PLU_Event_Info();
-        log_plu_event_info.fromArrayToObject(opCodeArray, lengthArray, messageArray);
+        try {
+            log_plu_event_info = new Log_PLU_Event_Info();
+            log_plu_event_info.fromArrayToObject(opCodeArray, lengthArray, messageArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     //    addedBytes = 0;
     //    read_timeout_idx = 0;
-         }
-     //       return null;
+          /*  if (mHandler != null) {
+            //    String data = "MESSAGE" + "\n";
+                String data = log_plu_event_info.toString() + "\n";
+                mHandler.obtainMessage(UsbService.MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
+            } else {
+                Log.e("mHandler is null", "Handler is null");
+            }
+*/
+      //      return log_plu_event_info;
+        }
+
     }
 
     @Override

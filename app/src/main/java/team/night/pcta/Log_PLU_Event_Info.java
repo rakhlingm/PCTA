@@ -34,15 +34,15 @@ public class Log_PLU_Event_Info {
     Superposition_Logger superposition_logger = Superposition_Logger.getInstance();
     EventString eventString = new EventString();
 
-    public Handler mHandler;
+//    public Handler mHandler;
 
     public Log_PLU_Event_Info() {
         super();
     }
 
-    public Log_PLU_Event_Info(Handler mHandler) {
+/*    public Log_PLU_Event_Info(Handler mHandler) {
         this.mHandler = mHandler;
-    }
+    }  */
 
 	/* Length = 0x0C */
 
@@ -179,9 +179,9 @@ public class Log_PLU_Event_Info {
         return UserVar3;
     }
 
-    public void setmHandler(Handler mHandler) {
+/*    public void setmHandler(Handler mHandler) {
         this.mHandler = mHandler;
-    }
+    }  */
 
     @Override
     public String toString() {

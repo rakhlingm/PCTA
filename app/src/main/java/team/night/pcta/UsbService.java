@@ -88,7 +88,7 @@ public class UsbService extends Service {
                     queue.addToQueue(b);
                 }
                 sb.append("]");
-          /*      if (mHandler != null) {
+           /*     if (mHandler != null) {
                     String data = "MESSAGE" + "\n";
                     mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
                 }  */
