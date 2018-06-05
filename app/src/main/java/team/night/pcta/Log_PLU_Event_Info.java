@@ -225,7 +225,7 @@ public class Log_PLU_Event_Info {
                 break;
         }
     //    System.out.println(eventLog.toString());
-          Log.i("PLU_Event_Info", eventLog.toString());
+//          Log.i("PLU_Event_Info", eventLog.toString());
             switch ((int) eventLog.getEventCode()) {
                 case 448: {
                     switch (superposition.getCounterLog448()) {

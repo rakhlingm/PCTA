@@ -75,6 +75,9 @@ public class UsbService extends Service {
     int read_timeout_idx = 0;
     int counter = 0;
     QueueFromSerial queue = QueueFromSerial.getInstance();
+
+    QueueNewEdition qne = new QueueNewEdition();
+
     private UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() {
         @Override
         public void onReceivedData(byte[] arg0) {
@@ -86,8 +89,10 @@ public class UsbService extends Service {
                 for (byte b : temp) {
                     sb.append(String.format("0x%02X ", b));
                     queue.addToQueue(b);
+         //           qne.add(b);
                 }
                 sb.append("]");
+           //     Log.d("QueueNewEdition ----   ", Integer.toString(qne.size()));
            /*     if (mHandler != null) {
                     String data = "MESSAGE" + "\n";
                     mHandler.obtainMessage(MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();

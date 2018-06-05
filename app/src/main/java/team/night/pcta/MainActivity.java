@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         setFilters();  // Start listening notifications from UsbService
         startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
+    //    startService(new Intent(this, QueueFromSerial.class));
     }
     /*TO ADD*/
     @Override
