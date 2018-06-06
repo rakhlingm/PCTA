@@ -191,9 +191,19 @@ public class Log_PLU_Event_Info {
                 + UserVar2 + ", UserVar3=" + UserVar3 + "]";
     }
 
-    public Log_PLU_Event_Info fromArrayToObject(byte[] OpCode, byte[] Length, byte[] array) {
+    public String fromArrayToObject(byte[] OpCode, byte[] Length, byte[] array) {
+    //    Log_PLU_Event_Info eventLog = null;
         Log_PLU_Event_Info eventLog = null;
-        int length = lengthFromByteArray(Length);
+        String strEventLog = "";
+        int length = 0;
+        try {
+            length = lengthFromByteArray(Length);
+            pcta_logger.i("Length: " + Integer.toString(length));
+        } catch (Exception e) {
+            pcta_logger.e(e.toString());
+            e.printStackTrace();
+        }
+
         switch (length) {
             case 0x0C:
                 eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
@@ -323,7 +333,7 @@ public class Log_PLU_Event_Info {
                 default: {
                     try {
                     //    String strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
-                        String strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
+                        strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
                         Log.i("strEventLog", strEventLog);
                         pcta_logger.i("strEventLog: " + strEventLog);
                     } catch (Exception e) {
@@ -334,7 +344,7 @@ public class Log_PLU_Event_Info {
                     break;
                 }
             }
-        return eventLog;
+        return strEventLog;
     }
     private void setSecondSuperpositionLog(Log_PLU_Event_Info eventLog) {
         superposition.setBin5(eventLog.getUserVar0());

@@ -3,6 +3,7 @@ package team.night.pcta;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 /**
  * Created by GregoriRakhlin on 6/3/2018.
@@ -10,10 +11,13 @@ import android.util.Log;
 
 public class QueueBytesFromSerial extends AsyncTask <Void, Void, Void> {
 
+
+
     QueueFromSerial qfs = QueueFromSerial.getInstance();
     Log_PLU_Event_Info log_plu_event_info = null;
     Handler mHandler;
     final static int TIMEOUT = 20;
+
     public void setHandler(Handler mHandler) {
         this.mHandler = mHandler;
     }
