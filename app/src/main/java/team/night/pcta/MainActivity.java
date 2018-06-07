@@ -266,9 +266,13 @@ public class MainActivity extends AppCompatActivity {
                 while ((addedBytes < 4)) { //&& (read_timeout_idx < 5000)) {
                     try {
                         opCodeArray[addedBytes] = qfs.peekQueue();
-                        //    Log.i("opCodeArray PeekQueue", String.format("0x%02X ", opCodeArray[addedBytes]));
-
+                        Log.i("opCodeArray PeekQueue", String.format("0x%02X ", opCodeArray[addedBytes]));
                         addedBytes++;
+                        if(addedBytes == 1 && opCodeArray[addedBytes - 1] != 0x01) {
+                            addedBytes = 0;
+                        } else {
+
+                        }
                     } catch (Exception e) {
                         Log.e("PeekQueue() timeout - 1", Integer.toString(++read_timeout_idx));
                         Log.e("Queue size - 1", Integer.toString(qfs.getQueue().size()));
@@ -344,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
                 addedBytes = 0;
                 read_timeout_idx = 0;
                 //     exception_counter = 0;
-                if(length != 0){
+                if(length != 0 && length <= 0x1C){
                     messageArray = new byte[length]; /* Exception */
                     while ((addedBytes < length) ) {//&& (read_timeout_idx < 500)) {
                         try {
