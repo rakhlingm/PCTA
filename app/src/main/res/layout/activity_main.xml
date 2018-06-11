@@ -38,16 +38,85 @@
 
         <requestFocus/>
     </EditText>
-
-    <Button
-        android:id="@+id/buttonSend"
-        style="?borderlessButtonStyle"
+    <LinearLayout
+        android:id="@+id/LinearLayoutARM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_alignRight="@+id/editText1"
         android:layout_below="@+id/editText1"
-        android:layout_marginTop="42dp"
-        android:text="Send"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="42dp">
+        <Button
+            android:id="@+id/buttonARM"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/textViewTitle"
+            android:text="ARM version:" />
+        <TextView
+            android:id="@+id/textViewARM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  ******* "/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/LinearLayoutDSP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutARM"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/buttonDSP"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/textViewTitle"
+            android:text="DSP version:" />
+        <TextView
+            android:id="@+id/textViewDSP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  ******* "/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/LinearLayoutConf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutDSP"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/buttonConf"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/textViewTitle"
+            android:text="Conf version:" />
+        <TextView
+            android:id="@+id/textViewConf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="******* "/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/LinearLayoutBT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutConf"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/buttonBT"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/textViewTitle"
+            android:text="BT version:" />
+        <TextView
+            android:id="@+id/textViewBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="     ******* "/>
+    </LinearLayout>
 
 </RelativeLayout>

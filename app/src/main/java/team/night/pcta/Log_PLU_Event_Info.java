@@ -34,17 +34,19 @@ public class Log_PLU_Event_Info {
     Superposition_Logger superposition_logger = Superposition_Logger.getInstance();
     EventString eventString = new EventString();
 
-//    public Handler mHandler;
-
     public Log_PLU_Event_Info() {
         super();
     }
 
-/*    public Log_PLU_Event_Info(Handler mHandler) {
-        this.mHandler = mHandler;
-    }  */
+    /* PLU response as 010000000400000000000000*/
 
-	/* Length = 0x0C */
+    public Log_PLU_Event_Info(long opCode, int length, long eventCode) {
+        OpCode = opCode;
+        Length = length;
+        EventCode = eventCode;
+    }
+
+    /* Length = 0x0C */
 
     public Log_PLU_Event_Info(long opCode, int length, long eventCode, int sID, int sVR, int fileID, int lineID,
                               int moduleID, long timeStamp) {
@@ -193,6 +195,7 @@ public class Log_PLU_Event_Info {
 
     public String fromArrayToObject(byte[] OpCode, byte[] Length, byte[] array) {
     //    Log_PLU_Event_Info eventLog = null;
+        FW_Version fw_version = null;
         Log_PLU_Event_Info eventLog = null;
         String strEventLog = "";
         int length = 0;
@@ -203,147 +206,179 @@ public class Log_PLU_Event_Info {
             pcta_logger.e(e.toString());
             e.printStackTrace();
         }
-
-        switch (length) {
-            case 0x0C:
-                eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
-                        , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
-                        , timeStamp_FromByteArray(array));
-                break;
-            case 0x10:
-                eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
-                        , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
-                        , timeStamp_FromByteArray(array), userVar0_FromByteArray(array));
-                break;
-            case 0x14:
-                eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
-                        , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
-                        , timeStamp_FromByteArray(array), userVar0_FromByteArray(array), userVar1_FromByteArray(array));
-                break;
-            case 0x18:
-                eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
-                        , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
-                        , timeStamp_FromByteArray(array), userVar0_FromByteArray(array), userVar1_FromByteArray(array), userVar2_FromByteArray(array));
-                break;
-            case 0x1C:
-                eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
-                        , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
-                        , timeStamp_FromByteArray(array), userVar0_FromByteArray(array), userVar1_FromByteArray(array), userVar2_FromByteArray(array)
-                        , userVar3_FromByteArray(array));
-                break;
-            default:
-                break;
-        }
-    //    System.out.println(eventLog.toString());
+        Log.i("opCodeFromByteArray", Long.toString(opCodeFromByteArray(OpCode)));
+        Log.i("OpCodes.LOG_EVENT_INFO", Long.toString(OpCodes.LOG_EVENT_INFO));
+        switch ((int)opCodeFromByteArray(OpCode)) {
+            case (int)OpCodes.LOG_EVENT_INFO : {
+            //   Log.i("Long to Integer", "True");
+            //    Log.i("Long to Integer", Integer.toString((int)OpCodes.LOG_EVENT_INFO));
+            //    if(opCodeFromByteArray(OpCode) == OpCodes.LOG_EVENT_INFO) {
+                    switch (length) {
+                        case 0x0C:
+                            eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
+                                    , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
+                                    , timeStamp_FromByteArray(array));
+                            break;
+                        case 0x10:
+                            eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
+                                    , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
+                                    , timeStamp_FromByteArray(array), userVar0_FromByteArray(array));
+                            break;
+                        case 0x14:
+                            eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
+                                    , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
+                                    , timeStamp_FromByteArray(array), userVar0_FromByteArray(array), userVar1_FromByteArray(array));
+                            break;
+                        case 0x18:
+                            eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
+                                    , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
+                                    , timeStamp_FromByteArray(array), userVar0_FromByteArray(array), userVar1_FromByteArray(array), userVar2_FromByteArray(array));
+                            break;
+                        case 0x1C:
+                            eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
+                                    , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
+                                    , timeStamp_FromByteArray(array), userVar0_FromByteArray(array), userVar1_FromByteArray(array), userVar2_FromByteArray(array)
+                                    , userVar3_FromByteArray(array));
+                            break;
+                        default:
+                            break;
+                    }
+                    //    System.out.println(eventLog.toString());
 //          Log.i("PLU_Event_Info", eventLog.toString());
-            switch ((int) eventLog.getEventCode()) {
-                case 448: {
-                    switch (superposition.getCounterLog448()) {
-                        case  0: {
-                            setFirstSuperpositionLog(eventLog);
-                            superposition.setCounterLog448(1);
+                    switch ((int) eventLog.getEventCode()) {
+                        case 448: {
+                            switch (superposition.getCounterLog448()) {
+                                case  0: {
+                                    setFirstSuperpositionLog(eventLog);
+                                    superposition.setCounterLog448(1);
+                                    break;
+                                }
+                                case  1: {
+                                    setSecondSuperpositionLog(eventLog);
+                                    superposition.setCounterLog448(0);
+                                    Log.i("Antenna 1", superposition.toString());
+                                    superposition_logger.log(1, superposition);
+                                    break;
+                                }
+                                default: {
+
+                                    break;
+                                }
+                            }
                             break;
                         }
-                        case  1: {
-                            setSecondSuperpositionLog(eventLog);
-                            superposition.setCounterLog448(0);
-                            Log.i("Antenna 1", superposition.toString());
-                            superposition_logger.log(1, superposition);
-                            try{
-                      /*          if (mHandler != null) {
-                                    String data = "MESSAGE";
-                                    mHandler.obtainMessage(UsbService.MESSAGE_FROM_SERIAL_PORT, data).sendToTarget();
-                                }   */
-                                Message msg = new Message();
-                                msg.obj = "Ali send message";
-                         //       mHandler.sendMessage(msg);
+                        case 449: {
+                            switch (superposition.getCounterLog449()) {
+                                case  0: {
+                                    setFirstSuperpositionLog(eventLog);
+                                    superposition.setCounterLog449(1);
+                                    break;
+                                }
+                                case  1: {
+                                    setSecondSuperpositionLog(eventLog);
+                                    superposition.setCounterLog449(0);
+                                    Log.i("Antenna 2", superposition.toString());
+                                    superposition_logger.log(2, superposition);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case 450: {
+                            switch (superposition.getCounterLog450()) {
+                                case  0: {
+                                    setFirstSuperpositionLog(eventLog);
+                                    superposition.setCounterLog450(1);
+                                    break;
+                                }
+                                case  1: {
+                                    setSecondSuperpositionLog(eventLog);
+                                    superposition.setCounterLog450(0);
+                                    Log.i("Antenna 3", superposition.toString());
+                                    superposition_logger.log(3, superposition);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        case 451: {
+                            switch (superposition.getCounterLog451()) {
+                                case  0: {
+                                    setFirstSuperpositionLog(eventLog);
+                                    superposition.setCounterLog451(1);
+                                    break;
+                                }
+                                case  1: {
+                                    setSecondSuperpositionLog(eventLog);
+                                    superposition.setCounterLog451(0);
+                                    Log.i("Antenna 4", superposition.toString());
+                                    superposition_logger.log(4, superposition);
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        default: {
+                            try {
+                                //    String strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
+                                strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
+                                Log.i("strEventLog", strEventLog);
+                                pcta_logger.i("strEventLog: " + strEventLog);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.e("strEventLog", "Unknown Event code: " + Integer.toString((int)eventLog.getEventCode()));
+                                pcta_logger.e("Unknown Event code: " + Integer.toString((int)eventLog.getEventCode()));
                             }
 
                             break;
                         }
-                        default: {
-
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case 449: {
-                    switch (superposition.getCounterLog449()) {
-                        case  0: {
-                            setFirstSuperpositionLog(eventLog);
-                            superposition.setCounterLog449(1);
-                            break;
-                        }
-                        case  1: {
-                            setSecondSuperpositionLog(eventLog);
-                            superposition.setCounterLog449(0);
-                            Log.i("Antenna 2", superposition.toString());
-                            superposition_logger.log(2, superposition);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case 450: {
-                    switch (superposition.getCounterLog450()) {
-                        case  0: {
-                            setFirstSuperpositionLog(eventLog);
-                            superposition.setCounterLog450(1);
-                            break;
-                        }
-                        case  1: {
-                            setSecondSuperpositionLog(eventLog);
-                            superposition.setCounterLog450(0);
-                            Log.i("Antenna 3", superposition.toString());
-                            superposition_logger.log(3, superposition);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case 451: {
-                    switch (superposition.getCounterLog451()) {
-                        case  0: {
-                            setFirstSuperpositionLog(eventLog);
-                            superposition.setCounterLog451(1);
-                            break;
-                        }
-                        case  1: {
-                            setSecondSuperpositionLog(eventLog);
-                            superposition.setCounterLog451(0);
-                            Log.i("Antenna 4", superposition.toString());
-                            superposition_logger.log(4, superposition);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                    break;
-                }
-                default: {
-                    try {
-                    //    String strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
-                        strEventLog = eventString.getEventString(eventLog).get((int)eventLog.getEventCode());
-                        Log.i("strEventLog", strEventLog);
-                        pcta_logger.i("strEventLog: " + strEventLog);
-                    } catch (Exception e) {
-                        Log.e("strEventLog", "Unknown Event code: " + Integer.toString((int)eventLog.getEventCode()));
-                        pcta_logger.e("Unknown Event code: " + Integer.toString((int)eventLog.getEventCode()));
                     }
 
-                    break;
-                }
+                break;
             }
+            case (OpCodes.FW_VERSION_GET + 1): {
+                Log.i("ARM version start", strEventLog);
+                fw_version = null;
+                try {
+                    fw_version = new FW_Version(opCodeFromByteArray(OpCode), lengthFromByteArray(Length)
+                    , retCode_FromByteArray(array), major_FromByteArray(array), minor_FromByteArray(array)
+                            , fix_FromByteArray(array));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            /*    eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length), eveneCode_FromByteArray(array)
+                        , SID_FromByteArray(array), SVR_FromByteArray(array), fileID_FromByteArray(array), lineID_FromByteArray(array), moduleID_FromByteArray(array)
+                        , timeStamp_FromByteArray(array), userVar0_FromByteArray(array));   */
+                Log.i("ARM version", fw_version.toString());
+                pcta_logger.i("ARM version: " + fw_version.toString());
+                strEventLog = fw_version.toString();
+                break;
+            }
+            case (1): {
+                Log.i("PLU response", strEventLog);
+                eventLog = new Log_PLU_Event_Info(opCodeFromByteArray(OpCode), lengthFromByteArray(Length)
+                        , eveneCode_FromByteArray(array));
+                Log.i("PLU response", eventLog.toString());
+                pcta_logger.i("PLU response: " + eventLog.toString());
+                break;
+            }
+            default: {
+                Log.i("Long to Integer", "False");
+                break;
+            }
+
+        }
+
         return strEventLog;
     }
     private void setSecondSuperpositionLog(Log_PLU_Event_Info eventLog) {
@@ -467,6 +502,50 @@ public class Log_PLU_Event_Info {
     }
     int lengthFromByteArray(byte[] bytes) {
         return bytes[3] << 24 | (bytes[2] & 0xFF) << 16 | (bytes[1] & 0xFF) << 8 | (bytes[0] & 0xFF);
+    }
+    long retCode_FromByteArray(byte[] bytes) {
+        long l = 0;
+        l |= bytes[3] & 0xFF;
+        l <<= 8;
+        l |= bytes[2] & 0xFF;
+        l <<= 8;
+        l |= bytes[1] & 0xFF;
+        l <<= 8;
+        l |= bytes[0] & 0xFF;
+        return l;
+    }
+    long major_FromByteArray(byte[] bytes) {
+        long l = 0;
+        l |= bytes[7] & 0xFF;
+        l <<= 8;
+        l |= bytes[6] & 0xFF;
+        l <<= 8;
+        l |= bytes[5] & 0xFF;
+        l <<= 8;
+        l |= bytes[4] & 0xFF;
+        return l;
+    }
+    long minor_FromByteArray(byte[] bytes) {
+        long l = 0;
+        l |= bytes[11] & 0xFF;
+        l <<= 8;
+        l |= bytes[10] & 0xFF;
+        l <<= 8;
+        l |= bytes[9] & 0xFF;
+        l <<= 8;
+        l |= bytes[8] & 0xFF;
+        return l;
+    }
+    long fix_FromByteArray(byte[] bytes) {
+        long l = 0;
+        l |= bytes[15] & 0xFF;
+        l <<= 8;
+        l |= bytes[14] & 0xFF;
+        l <<= 8;
+        l |= bytes[13] & 0xFF;
+        l <<= 8;
+        l |= bytes[12] & 0xFF;
+        return l;
     }
     public static String getCurrentTimeStamp(){
         try {

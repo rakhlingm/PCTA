@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Set;
 
+import static team.night.pcta.FW_Images.*;
+
 public class MainActivity extends AppCompatActivity {
 
     /*
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     Superposition_Logger superposition_logger;
     QueueBytesFromSerial qbfs;
     int count = 0;
+    FW_Images fw_image;
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -58,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
     private UsbService usbService;
     private Log_PLU_Event_Info log_plu_event_info;
     private TextView display;
+    private TextView textView_ARM;
+    private TextView textView_DSP;
+    private TextView textView_Conf;
+    private TextView textView_BT;
     private EditText editText;
     private MyHandler mHandler;
     private Handler mTextBoxHandler;
@@ -122,17 +129,43 @@ public class MainActivity extends AppCompatActivity {
     //    log_plu_event_info.setmHandler(mHandler);
 
         editText = (EditText) findViewById(R.id.editText1);
-        Button sendButton = (Button) findViewById(R.id.buttonSend);
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        textView_ARM = (TextView) findViewById(R.id.textViewARM);
+        textView_DSP = (TextView) findViewById(R.id.textViewDSP);
+        textView_Conf = (TextView) findViewById(R.id.textViewConf);
+        textView_BT = (TextView) findViewById(R.id.textViewBT);
+        Button ARM_Button = (Button) findViewById(R.id.buttonARM);
+        ARM_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!editText.getText().toString().equals("")) {
-                    String data = editText.getText().toString();
-                    if (usbService != null) { // if UsbService was correctly binded, Send data
-                        display.append(data);
-                        usbService.write(data.getBytes());
-                    }
+                if (editText.getText().toString().equals("")) {
+                //    String data = editText.getText().toString();
+                    fw_image = ARM;
+                    FW_Version.getVersion(usbService, FW_Version.armVersionImage);
                 }
+            }
+        });
+        Button DSP_Button = (Button) findViewById(R.id.buttonDSP);
+        DSP_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    fw_image = DSP;
+                    FW_Version.getVersion(usbService, FW_Version.dspVersionImage);
+            }
+        });
+        Button Conf_Button = (Button) findViewById(R.id.buttonConf);
+        Conf_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fw_image = CONF;
+                FW_Version.getVersion(usbService, FW_Version.confVersionImage);
+            }
+        });
+        Button BT_Button = (Button) findViewById(R.id.buttonBT);
+        BT_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fw_image = BT;
+                FW_Version.getVersion(usbService, FW_Version.btVersionImage);
             }
         });
     //    qbfs = new QueueBytesFromSerial();
@@ -141,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
         QueueBytesFromSerialPrivate qbfs = new QueueBytesFromSerialPrivate();
         qbfs.execute();
     }
+
+
     /*TO ADD*/
     @Override
     public void onResume() {
@@ -391,17 +426,44 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     log_plu_event_info = new Log_PLU_Event_Info();
                     final String lpei = log_plu_event_info.fromArrayToObject(opCodeArray, lengthArray, messageArray);
-                //    Log.i("og_plu_event_info", log_plu_event_info.toString());
-                    if(lpei != "") {
+                //    final FW_Version lpei = log_plu_event_info.fromArrayToObject(opCodeArray, lengthArray, messageArray);
+                    Log.i("ARM version main: ", lpei.toString());
+                    if(lpei != null) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                             //    display.append(lpei + "\n");
-                                    display.append(Integer.toString(++count) + "\n");
+                                display.append(Integer.toString(++count) + "\n");
                                 int scrollAmount = display.getLayout().getLineTop(display.getLineCount()) - display.getHeight();
                                 // if there is no need to scroll, scrollAmount will be <=0
                                 if (scrollAmount > 0) {
                                     display.scrollTo(0, scrollAmount);
+                                }
+                                if(lpei.contains("FW_Version_")) {
+                                    switch (fw_image) {
+                                        case ARM : {
+                                            Log.i("ARM", lpei);
+                                            textView_ARM.setText(" " + lpei);
+                                            break;
+                                        }
+                                        case DSP:
+                                            Log.i("DSP", lpei);
+                                            textView_DSP.setText("  " + lpei);
+                                            break;
+                                        case CONF:
+                                            Log.i("CONF", lpei);
+                                            textView_Conf.setText(lpei);
+                                            break;
+                                        case BT:
+                                            Log.i("BT", lpei);
+                                            textView_BT.setText("     " + lpei);
+                                            break;
+                                        default: {
+                                            Log.i("FW get version", "ERROR");
+                                            break;
+                                        }
+                                    }
+
                                 }
 
                             }
