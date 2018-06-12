@@ -5,5 +5,5 @@ package team.night.pcta;
  */
 
 public enum FW_Images {
-    ARM, DSP, CONF, BT
+    ARM, DSP, CONF, BT, BNDL_CONF, BUNDLE
 }

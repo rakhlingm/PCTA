@@ -25,26 +25,13 @@
         android:layout_marginTop="34dp"
         android:background="#FFFFFF"
         android:scrollbars="vertical"/>
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignRight="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="28dp"
-        android:ems="10">
-
-        <requestFocus/>
-    </EditText>
     <LinearLayout
         android:id="@+id/LinearLayoutARM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/textView1"
         android:orientation="horizontal"
-        android:layout_marginTop="42dp">
+        android:layout_marginTop="20dp">
         <Button
             android:id="@+id/buttonARM"
             style="?borderlessButtonStyle"
@@ -76,7 +63,7 @@
             android:id="@+id/textViewDSP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  ******* "/>
+            android:text="   ******* "/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/LinearLayoutConf"
@@ -116,7 +103,47 @@
             android:id="@+id/textViewBT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="     ******* "/>
+            android:text="      ******* "/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutBundleConf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutBT"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/buttonBNDL_CONF"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BL/Conf:" />
+        <TextView
+            android:id="@+id/textViewBNDL_CONF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="           ******* "/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutBundle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutBundleConf"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/buttonBundle"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bundle:" />
+        <TextView
+            android:id="@+id/textViewBundle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="           ******* "/>
     </LinearLayout>
 
 </RelativeLayout>

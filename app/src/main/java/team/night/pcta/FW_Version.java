@@ -21,6 +21,8 @@ public class FW_Version {
     final static byte[] dspVersionImage  =   new byte[] {0x01, 0x00, 0x00, 0x00};
     final static byte[] btVersionImage   =   new byte[] {0x03, 0x00, 0x00, 0x00};
     final static byte[] confVersionImage =   new byte[] {0x02, 0x00, 0x00, 0x00};
+    final static byte[] bundle_conf =   new byte[] {0x04, 0x00, 0x00, 0x00};
+    final static byte[] bundle =   new byte[] {0x05, 0x00, 0x00, 0x00};
 
     public FW_Version() {
     }
@@ -116,7 +118,7 @@ public class FW_Version {
 
     @Override
     public String toString() {
-        return "FW_Version_" + major + "." + minor + "." + fix;
+        return "v_" + major + "." + minor + "." + fix;
     }
 /*    @Override
     public String toString() {

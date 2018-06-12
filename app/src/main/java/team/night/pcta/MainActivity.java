@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView_DSP;
     private TextView textView_Conf;
     private TextView textView_BT;
+    private TextView textView_BNDL_CONF;
+    private TextView textView_Bundle;
     private EditText editText;
     private MyHandler mHandler;
     private Handler mTextBoxHandler;
@@ -128,20 +130,22 @@ public class MainActivity extends AppCompatActivity {
         mHandler = new MyHandler(this);
     //    log_plu_event_info.setmHandler(mHandler);
 
-        editText = (EditText) findViewById(R.id.editText1);
+    //    editText = (EditText) findViewById(R.id.editText1);
         textView_ARM = (TextView) findViewById(R.id.textViewARM);
         textView_DSP = (TextView) findViewById(R.id.textViewDSP);
         textView_Conf = (TextView) findViewById(R.id.textViewConf);
         textView_BT = (TextView) findViewById(R.id.textViewBT);
+        textView_BNDL_CONF = (TextView) findViewById(R.id.textViewBNDL_CONF);
+        textView_Bundle = (TextView) findViewById(R.id.textViewBundle);
         Button ARM_Button = (Button) findViewById(R.id.buttonARM);
         ARM_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editText.getText().toString().equals("")) {
+        //        if (editText.getText().toString().equals("")) {
                 //    String data = editText.getText().toString();
                     fw_image = ARM;
                     FW_Version.getVersion(usbService, FW_Version.armVersionImage);
-                }
+        //        }
             }
         });
         Button DSP_Button = (Button) findViewById(R.id.buttonDSP);
@@ -166,6 +170,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 fw_image = BT;
                 FW_Version.getVersion(usbService, FW_Version.btVersionImage);
+            }
+        });
+        Button  BNDL_CONF_Button= (Button) findViewById(R.id.buttonBNDL_CONF);
+        BNDL_CONF_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fw_image = BNDL_CONF;
+                FW_Version.getVersion(usbService, FW_Version.bundle_conf);
+            }
+        });
+        Button BUNDLE_Button = (Button) findViewById(R.id.buttonBundle);
+        BUNDLE_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fw_image = BUNDLE;
+                FW_Version.getVersion(usbService, FW_Version.bundle);
             }
         });
     //    qbfs = new QueueBytesFromSerial();
@@ -439,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (scrollAmount > 0) {
                                     display.scrollTo(0, scrollAmount);
                                 }
-                                if(lpei.contains("FW_Version_")) {
+                                if(lpei.contains("v_")) {
                                     switch (fw_image) {
                                         case ARM : {
                                             Log.i("ARM", lpei);
@@ -457,6 +477,16 @@ public class MainActivity extends AppCompatActivity {
                                         case BT:
                                             Log.i("BT", lpei);
                                             textView_BT.setText("     " + lpei);
+                                            break;
+                                        case BNDL_CONF:
+                                            String bundle_conf = lpei.substring((lpei.length() - 1),lpei.length()) +
+                                                    "/" + lpei.substring((lpei.length() - 3), (lpei.length() - 2));
+                                            Log.i("BUNDLE_CONF", bundle_conf);
+                                            textView_BNDL_CONF.setText("         " + bundle_conf);
+                                            break;
+                                        case BUNDLE:
+                                            Log.i("BUNDLE", lpei);
+                                            textView_Bundle.setText("        " + lpei);
                                             break;
                                         default: {
                                             Log.i("FW get version", "ERROR");
