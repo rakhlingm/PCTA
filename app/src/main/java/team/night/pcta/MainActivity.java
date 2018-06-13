@@ -1,5 +1,6 @@
 package team.night.pcta;
 
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -186,6 +187,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 fw_image = BUNDLE;
                 FW_Version.getVersion(usbService, FW_Version.bundle);
+            }
+        });
+        final FragmentManager fm=getFragmentManager();
+        final BinFilesListFragment bflf = new BinFilesListFragment();
+        Button Find_FW_Button = (Button) findViewById(R.id.buttonFindFW);
+        Find_FW_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bflf.show(fm, "Files");
             }
         });
     //    qbfs = new QueueBytesFromSerial();

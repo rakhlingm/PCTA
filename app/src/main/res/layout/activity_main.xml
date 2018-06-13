@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="5dp">
         <Button
             android:id="@+id/buttonARM"
             style="?borderlessButtonStyle"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/LinearLayoutARM"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonDSP"
             style="?borderlessButtonStyle"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/LinearLayoutDSP"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonConf"
             style="?borderlessButtonStyle"
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/LinearLayoutConf"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonBT"
             style="?borderlessButtonStyle"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/LinearLayoutBT"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonBNDL_CONF"
             style="?borderlessButtonStyle"
@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/LinearLayoutBundleConf"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="0dp">
         <Button
             android:id="@+id/buttonBundle"
             style="?borderlessButtonStyle"
@@ -144,6 +144,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="           ******* "/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutFWLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutBundle"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <Button
+            android:id="@+id/buttonFindFW"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Find FW" />
+        <Button
+            android:id="@+id/buttonLoadFW"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load FW"/>
     </LinearLayout>
 
 </RelativeLayout>

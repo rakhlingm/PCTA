@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <SearchView
+        android:id="@+id/searchView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </SearchView>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/textViewFileToLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="     Image file not selected"
+        android:ellipsize="marquee"
+        android:gravity="left"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"/>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutBundleRadioBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewFileToLoad"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <RadioGroup
+            android:id="@+id/radioGroupBundle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radioButtonBundle0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bndl 0" />
+            <RadioButton
+                android:id="@+id/radioButtonBundle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bndl 1" />
+            <RadioButton
+                android:id="@+id/radioButtonBundle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bndl 2" />
+            <RadioButton
+                android:id="@+id/radioButtonBT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="BT" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayoutFWImageRadioBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayoutBundleRadioBtn"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <RadioGroup
+            android:id="@+id/radioGroupImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radioButtonARM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ARM   " />
+            <RadioButton
+                android:id="@+id/radioButtonDSP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DSP   " />
+            <RadioButton
+                android:id="@+id/radioButtonCONF0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conf0 " />
+            <RadioButton
+                android:id="@+id/radioButtonCONF1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Conf1" />
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/dismiss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
+    <Button
+        android:id="@+id/Load"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Load" />
+
+</LinearLayout>
